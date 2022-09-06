@@ -70,6 +70,30 @@ Usage:
   -h, --help                  Print usage
 ```
 
+### Preprequirement
+Install the faiss library:
+
+Build faiss 1.7.2 For CPU Only (Works on Mac M1 too)
+
+```
+git clone https://github.com/facebookresearch/faiss.git
+cd faiss
+cmake -DFAISS_ENABLE_GPU=OFF -B build .
+make -C build -j8 faiss
+make -C build -j swigfaiss
+make -C build install
+make -C build test
+
+(cd build/faiss/python && python setup.py build && python3 -m pip install -e .)
+```
+
+Prepare the serving index, and run the service:
+
+```
+python3 scripts/create_test_faiss_embedding.py
+./build/faiss-serving -i test.faiss
+```
+
 ### Build docker image
 
 ```sh
